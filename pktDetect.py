@@ -6,8 +6,7 @@ import pcap
 from scapy.all import *
 
 def detector(pkt):
-	captured={}
-	if pkt.haslayer(IP) and pkt.haslayer(DNS) and pkt[DNS].aa == 1:
+	if pkt.haslayer(IP) and pkt.haslayer(DNS) and pkt.haslayer(DNSRR):
 		if pkt[DNS].id in captured:
 			oldpkt=captured[pkt[DNS].id]
 		        if oldpkt[DNSRR].rdata != pkt[DNSRR].rdata:
@@ -21,6 +20,7 @@ def detector(pkt):
 
 if __name__ == '__main__':
 	spoofedPacketsFile = None
+	captured={}
 	parser = OptionParser()
 	parser.set_conflict_handler("resolve")
 	parser.add_option('-i', dest="interface",default=pcap.lookupdev())
