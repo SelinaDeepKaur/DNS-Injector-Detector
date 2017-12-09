@@ -1,15 +1,20 @@
 # DNS-Injector-Detector
 
-Dependencies:
+DEPENDENCIES:
 
-COMMANDS:
+Commands:
 
   sudo apt-get install python-libpcap 
+  
   sudo apt install python-pip
+  
   pip install netifaces
+  
   pip install scapy
 
-Commands to run the code:
+
+
+COMMANDS TO RUN THE CODE:
 
   sudo python pktInject.py -i ens33 -h hostsmap udp      (Machine 1)
   sudo python pktDetect.py -i ens33 -r mypcap.pcap      (offline mode) (Machine 2)
@@ -17,8 +22,10 @@ Commands to run the code:
   sudo python pktDetect.py -i ens33  udp                        (Machine 2)
   dig cs.stonybrook.edu (to generate requests)               (Machine 2)
   dig @77.88.8.8 amazon.com (to generate requests)    (Machine 2)
+  
+  
 
-Design:
+DESIGN:
 
 DNS INJECT:
 
@@ -43,23 +50,29 @@ DNS DETECT:
   If a match is found, I store all the ‘type A rdata’ records of the both the packets in separate lists l1 
   and l2. The sorted lists l1 and l2 are compared against each other. If the lists do not match, it means a
   DNS poisoning attempt has been made.
+  
+  
 
-Handling the false positives:
+HANDLING THE FALSE POSITIVES:
 
   As mentioned above the detector callback function checks the rdata of the matching packets. 
   Only when there is a disparity in the rdata of the two packets, we say that a DNS poisoning 
   attempt has been made. The function returns if the rdata of the packets match and no alarm is raised.
   So if two genuine packets are sent by the server, they won’t be reported because their rdata would match.
+  
+  
 
-Test Environment:
+TEST ENVIRONMENT:
 
   Distributor ID:	Ubuntu
   Description:		Ubuntu 16.04.3 LTS
   Release:		16.04
   Codename:		xenial
   Language: 		Python 2.7.12
+  
+  
 
-References:
+REFERENCES:
   https://pymotw.com/2/optparse/
   https://stackoverflow.com/questions/11735821/python-get-localhost-ip 
   http://www.cs.dartmouth.edu/~sergey/netreads/local/reliable-dns-spoofing-with-python-scapy-nfqueue.html
