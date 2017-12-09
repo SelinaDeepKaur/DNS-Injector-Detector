@@ -2,8 +2,6 @@
 
 DEPENDENCIES:
 
-Commands:
-
   sudo apt-get install python-libpcap 
   
   sudo apt install python-pip
@@ -17,10 +15,15 @@ Commands:
 COMMANDS TO RUN THE CODE:
 
   sudo python pktInject.py -i ens33 -h hostsmap udp      (Machine 1)
+
   sudo python pktDetect.py -i ens33 -r mypcap.pcap      (offline mode) (Machine 2)
+  
   The BPF filter doesn’t get applied to sniff if it operates in the offline mode
+  
   sudo python pktDetect.py -i ens33  udp                        (Machine 2)
+  
   dig cs.stonybrook.edu (to generate requests)               (Machine 2)
+  
   dig @77.88.8.8 amazon.com (to generate requests)    (Machine 2)
   
   
@@ -65,17 +68,24 @@ HANDLING THE FALSE POSITIVES:
 TEST ENVIRONMENT:
 
   Distributor ID:	Ubuntu
+  
   Description:		Ubuntu 16.04.3 LTS
+  
   Release:		16.04
+  
   Codename:		xenial
+  
   Language: 		Python 2.7.12
   
   
 
 REFERENCES:
   https://pymotw.com/2/optparse/
+  
   https://stackoverflow.com/questions/11735821/python-get-localhost-ip 
+  
   http://www.cs.dartmouth.edu/~sergey/netreads/local/reliable-dns-spoofing-with-python-scapy-nfqueue.html
+  
   https://stackoverflow.com/questions/12501780/dnsrr-iteration
 
 
