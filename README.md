@@ -14,7 +14,7 @@ DEPENDENCIES:
 
 
 
-#COMMANDS TO RUN THE CODE:
+COMMANDS TO RUN THE CODE:
 --------------
 
   sudo python pktInject.py -i ens33 -h hostsmap udp      (Machine 1)
@@ -33,7 +33,7 @@ DEPENDENCIES:
   
   
 
-#DESIGN:
+DESIGN:
 -------------
 
 DNS INJECT:
@@ -64,7 +64,7 @@ DNS DETECT:
   
   
 
-#HANDLING THE FALSE POSITIVES:
+HANDLING THE FALSE POSITIVES:
 ------------------
 
   As mentioned above the detector callback function checks the rdata of the matching packets. 
@@ -76,7 +76,7 @@ DNS DETECT:
   
   
 
-#TEST ENVIRONMENT:
+TEST ENVIRONMENT:
 ----------------
   Distributor ID:	Ubuntu
   
@@ -92,7 +92,7 @@ DNS DETECT:
   
   
 
-#REFERENCES:
+REFERENCES:
 ----------------
 
   https://pymotw.com/2/optparse/
