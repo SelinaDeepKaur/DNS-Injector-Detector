@@ -1,7 +1,7 @@
 # DNS-Injector-Detector
 
-#DEPENDENCIES:
-
+DEPENDENCIES:
+------------
   sudo apt-get install python-libpcap 
   
   sudo apt install python-pip
@@ -15,6 +15,7 @@
 
 
 #COMMANDS TO RUN THE CODE:
+--------------
 
   sudo python pktInject.py -i ens33 -h hostsmap udp      (Machine 1)
 
@@ -33,6 +34,7 @@
   
 
 #DESIGN:
+-------------
 
 DNS INJECT:
 
@@ -63,6 +65,7 @@ DNS DETECT:
   
 
 #HANDLING THE FALSE POSITIVES:
+------------------
 
   As mentioned above the detector callback function checks the rdata of the matching packets. 
   Only when there is a disparity in the rdata of the two packets, we say that a DNS poisoning 
@@ -74,7 +77,7 @@ DNS DETECT:
   
 
 #TEST ENVIRONMENT:
-
+----------------
   Distributor ID:	Ubuntu
   
   Description:		Ubuntu 16.04.3 LTS
@@ -90,6 +93,7 @@ DNS DETECT:
   
 
 #REFERENCES:
+----------------
 
   https://pymotw.com/2/optparse/
   
