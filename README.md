@@ -9,6 +9,8 @@ DEPENDENCIES:
   pip install netifaces
   
   pip install scapy
+  
+  
 
 
 
@@ -25,6 +27,8 @@ COMMANDS TO RUN THE CODE:
   dig cs.stonybrook.edu (to generate requests)               (Machine 2)
   
   dig @77.88.8.8 amazon.com (to generate requests)    (Machine 2)
+  
+  
   
   
 
@@ -55,6 +59,8 @@ DNS DETECT:
   DNS poisoning attempt has been made.
   
   
+  
+  
 
 HANDLING THE FALSE POSITIVES:
 
@@ -62,6 +68,8 @@ HANDLING THE FALSE POSITIVES:
   Only when there is a disparity in the rdata of the two packets, we say that a DNS poisoning 
   attempt has been made. The function returns if the rdata of the packets match and no alarm is raised.
   So if two genuine packets are sent by the server, they won’t be reported because their rdata would match.
+  
+  
   
   
 
@@ -76,6 +84,8 @@ TEST ENVIRONMENT:
   Codename:		xenial
   
   Language: 		Python 2.7.12
+  
+  
   
   
 
