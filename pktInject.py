@@ -19,10 +19,8 @@ def injector(pkt):
 		affectedHost = pkt[DNSQR].qname
 		if options.hostsmap!=None:
 			if affectedHost.rstrip('.') in mapping:	
-            			redirect_to = mapping[affectedHost.rstrip('.')]
-				print redirect_to	
+            			redirect_to = mapping[affectedHost.rstrip('.')]	
 			if(redirect_to==""):
-				print redirect_to
 				return
 					
 		else:
