@@ -14,11 +14,13 @@ def detector(pkt):
 			oldpkt=captured[pkt[DNS].id]
 			for i in range(pkt['DNS'].ancount):
 				dnsrr=pkt['DNS'].an[i]
-				l1.append(dnsrr.rdata)
+				if dnsrr.type== 1:
+					l1.append(dnsrr.rdata)
 
 			for i in range(oldpkt['DNS'].ancount):
 				dnsrr=oldpkt['DNS'].an[i]
-				l2.append(dnsrr.rdata)
+				if dnsrr.type== 1:
+					l2.append(dnsrr.rdata)
 			
 			l1=sorted(l1)
 			l2=sorted(l2)
